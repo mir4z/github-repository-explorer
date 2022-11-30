@@ -9,6 +9,7 @@ module.exports = {
     'airbnb/hooks',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:@tanstack/eslint-plugin-query/recommended',
     'plugin:prettier/recommended',
   ],
   overrides: [],
@@ -21,6 +22,7 @@ module.exports = {
   plugins: ['react', '@typescript-eslint'],
   rules: {
     'react/react-in-jsx-scope': 0,
+    'import/prefer-default-export': 0,
     'import/no-extraneous-dependencies': [
       'error',
       { devDependencies: ['**/tests/**'] },
