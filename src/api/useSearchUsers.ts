@@ -28,5 +28,6 @@ export const useSearchUsers = (username: string) => {
     retry: false,
     staleTime: Infinity,
     enabled: username?.length !== 0,
+    suspense: true,
   });
 };
