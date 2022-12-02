@@ -13,7 +13,12 @@ export function SearchUsersView() {
   };
 
   return (
-    <Box display="flex" flexDirection="column" gap="1rem" minWidth="400px">
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap="1rem"
+      sx={{ width: { xs: '80%', sm: '70%', md: '400px' } }}
+    >
       <SearchForm onSubmit={onSearchUser} isDisabled={false} />
 
       <Suspense fallback={<Typography>Loading...</Typography>}>

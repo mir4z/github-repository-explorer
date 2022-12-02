@@ -12,7 +12,7 @@ export function RepositoryCard({ repository }: Props) {
       onClick={() => {
         window.open(repository.html_url, '_blank');
       }}
-      sx={{ minWidth: 275, maxWidth: 400, margin: '1rem 0', cursor: 'pointer' }}
+      sx={{ margin: '1rem 0', cursor: 'pointer' }}
     >
       <Box>
         <CardContent>

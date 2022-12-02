@@ -50,7 +50,7 @@ export function UserAccordion({ user }: Props) {
     <Accordion
       expanded={expanded}
       onChange={onToggleAccordion}
-      sx={{ boxShadow: 'none', minWidth: '400px' }}
+      sx={{ boxShadow: 'none' }}
     >
       <AccordionSummary
         onMouseEnter={() => refetch()}
