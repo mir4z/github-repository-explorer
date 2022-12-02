@@ -1,41 +1,51 @@
+import { Box } from '@mui/material';
 import { useState } from 'react';
 import { useSearchUsers } from './api/useSearchUsers';
 import './App.css';
+import { SearchForm } from './components/ui/SearchForm';
+import { NoUserDataMessage } from './features/repositorySearch/NoUserDataMessage';
+import { UserSearchStatus } from './features/repositorySearch/UserSearchStatus';
+import { UserAccordionList } from './features/repositorySearch/UserAccordionList';
 
-function App() {
+export function App() {
   const [search, setSearch] = useState('');
   const {
-    isLoading,
-    isStale,
+    isSuccess,
+    isFetching: isLoadingData,
+    isFetched,
     error,
-    data: githubUsers,
-    refetch,
+    data: users,
   } = useSearchUsers(search);
 
-  if (!isStale && isLoading) return <>Loading...</>;
-
-  if (error) return <>`An error has occurred: ${error.message}`</>;
-
-  const onSearchUser = (e: React.FormEvent<HTMLInputElement>) => {
-    const { value } = e.currentTarget;
-    setSearch(value);
+  const onSearchUser = (searchedUserPhrase: string) => {
+    setSearch(searchedUserPhrase);
   };
+
+  const foundUsers = isFetched && !!users && !!users.length;
+
+  const noDataMessage = (
+    <NoUserDataMessage
+      error={error}
+      isLoading={isLoadingData}
+      isFetched={isFetched}
+      data={users}
+      searchedPhrase={search}
+    />
+  );
+
   return (
     <div className="App">
-      <div>
-        <input type="text" value={search} onChange={onSearchUser} />
-        <button onClick={() => refetch()}>search</button>
-        {githubUsers?.map((user) => {
-          return (
-            <div key={user.id}>
-              <h1>{user?.login}</h1>
-              <p>{user?.repos_url}</p>
-            </div>
-          );
-        })}
-      </div>
+      <Box display="flex" flexDirection="column" gap="1rem" minWidth="400px">
+        <SearchForm onSubmit={onSearchUser} isDisabled={isLoadingData} />
+        <UserSearchStatus
+          isLoading={isLoadingData}
+          isSuccess={isSuccess}
+          searchedPhrase={search}
+        />
+        <Box>
+          {foundUsers ? <UserAccordionList users={users} /> : noDataMessage}
+        </Box>
+      </Box>
     </div>
   );
 }
-
-export default App;
