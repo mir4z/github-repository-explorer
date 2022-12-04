@@ -4,7 +4,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import { useId, useState } from 'react';
-import { useSearchRepositories } from '../../api/useSearchRepositories';
+import { apiSlice } from '../../api/apiSlice';
 import { GithubUser } from '../../models/github';
 import { RepositoryCard } from './RepositoryCard';
 
@@ -20,17 +20,14 @@ export function UserAccordion({ user }: Props) {
   const [expanded, setExpanded] = useState(false);
   const accordionId = useId();
 
-  const {
-    refetch,
-    data: repositories,
-    isFetching,
-  } = useSearchRepositories(user.login);
+  const [refetch, { isFetching, data: repositories }] =
+    apiSlice.endpoints.getRepositories.useLazyQuery();
 
   const hasNoRepositories = !repositories || repositories?.length === 0;
 
   const onToggleAccordion = () => {
     const toggledAccordionState = !expanded;
-    if (toggledAccordionState) refetch();
+    if (toggledAccordionState) refetch(user.login, true);
     setExpanded(toggledAccordionState);
   };
 
@@ -53,7 +50,7 @@ export function UserAccordion({ user }: Props) {
       sx={{ boxShadow: 'none' }}
     >
       <AccordionSummary
-        onMouseEnter={() => refetch()}
+        onMouseEnter={() => refetch(user.login, true)}
         sx={{ backgroundColor: '#add8e6' }}
         expandIcon={<ExpandMoreIcon />}
         aria-controls={`${accordionId}`}

@@ -1,7 +1,5 @@
-import { Box, Typography } from '@mui/material';
-import { Suspense, useState } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
-import { ErrorFallback } from '../components/ui/ErrorFallback';
+import { Box } from '@mui/material';
+import { useState } from 'react';
 import { SearchForm } from '../components/ui/SearchForm';
 import { UserAccordionList } from '../features/repositorySearch/UserAccordionList';
 
@@ -20,12 +18,7 @@ export function SearchUsersView() {
       sx={{ width: { xs: '80%', sm: '70%', md: '400px' } }}
     >
       <SearchForm onSubmit={onSearchUser} isDisabled={false} />
-
-      <Suspense fallback={<Typography>Loading...</Typography>}>
-        <ErrorBoundary FallbackComponent={ErrorFallback}>
-          <UserAccordionList searchedPhrase={searchUser} />
-        </ErrorBoundary>
-      </Suspense>
+      <UserAccordionList searchedPhrase={searchUser} />
     </Box>
   );
 }
